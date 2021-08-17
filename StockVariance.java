@@ -61,9 +61,9 @@ public class StockVariance {
                     first = false;
                 } else {
                     double meanDiff = meanNext - mean;
-                    mean = (pop * mean + popNew * meanNew) / (pop + popNew);
-                    s2 = s2 + s2New + meanDiff * meanDiff * pop * popNew / (pop + popNew);
-                    pop = pop + popNew;
+                    mean = (pop * mean + popNext * meanNext) / (pop + popNext);
+                    s2 = s2 + s2Next + meanDiff * meanDiff * pop * popNext / (pop + popNext);
+                    pop = pop + popNext;
                 }
             }
             String lineOut = String.format("%f,%f,%f", pop, mean, s2);
