@@ -23,9 +23,9 @@ public class StockVariance {
 
                 String[] lineIn = itr.nextToken().split(",");
                 // average all given price values to get one stock price
-                String name = lineIn[6];
-                double price = (Double.parseDouble(lineIn[1]) + Double.parseDouble(lineIn[2]) + 
-                    Double.parseDouble(lineIn[3]) + Double.parseDouble(lineIn[4])) / 4;
+                String name = lineIn[7];
+                double price = (Double.parseDouble(lineIn[2]) + Double.parseDouble(lineIn[3]) + 
+                    Double.parseDouble(lineIn[4]) + Double.parseDouble(lineIn[5])) / 4;
                 double mean = price;
                 double s2 = 0;
                 double popSize = 1;
