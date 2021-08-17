@@ -42,9 +42,9 @@ public class StockVariance {
 
         public void reduce(Text key, Iterable<Text> values, Context context
         ) throws IOException, InterruptedException {
-            double pop;
-            double mean;
-            double s2;
+            double pop = 1;
+            double mean = 1;
+            double s2 = 0;
 
             boolean first = true;
             for (Text val : values) {
