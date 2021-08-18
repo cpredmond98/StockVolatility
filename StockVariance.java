@@ -3,7 +3,7 @@ import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -13,75 +13,57 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class StockVariance {
 
-    public static class StockMapper
-            extends Mapper<Object, Text, Text, Text>{
+    public static class StockMapper extends Mapper<Object, Text, Text, DoubleWritable> {
 
-        public void map(Object key, Text value, Context context
-        ) throws IOException, InterruptedException {
-            StringTokenizer itr = new StringTokenizer(value.toString());
-            while (itr.hasMoreTokens()) {
+        public void map(Object key, Text value, Context context)
+                throws IOException, InterruptedException {
 
-                String[] lineIn = itr.nextToken().split(",");
-                // average all given price values to get one stock price
-                String name = lineIn[7];
-                double price = (Double.parseDouble(lineIn[2]) + Double.parseDouble(lineIn[3]) + 
-                    Double.parseDouble(lineIn[4]) + Double.parseDouble(lineIn[5])) / 4;
-                double mean = price;
-                double s2 = 0;
-                double popSize = 1;
-                String lineOut = String.format("%f,%f,%f", popSize, mean, s2);
-
-                context.write(new Text(name), new Text(lineOut));
-            }
+		StringTokenizer itr = new StringTokenizer(value.toString());
+		while (itr.hasMoreTokens()) {
+			String[] lineIn = itr.nextToken().split(",");
+			// average all given price values to get one stock price
+			String name = lineIn[7].trim();
+			double price = (Double.parseDouble(lineIn[2]) + Double.parseDouble(lineIn[3]) + 
+			   Double.parseDouble(lineIn[4]) + Double.parseDouble(lineIn[5])) / 4;
+			context.write(new Text(name), new DoubleWritable(price));
+		}
         }
     }
 
-    public static class StockReducer
-            extends Reducer<Text,Text,Text,Text> {
+    public static class VarianceReducer extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
 
+        public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
+                throws IOException, InterruptedException {
 
-        public void reduce(Text key, Iterable<Text> values, Context context
-        ) throws IOException, InterruptedException {
-            double pop = 1;
-            double mean = 1;
-            double s2 = 0;
+            double sum = 0;
+            double sumSquared = 0;
+            double n = 0;
 
-            boolean first = true;
-            for (Text val : values) {
-                String[] line = val.toString().split(",");
-                double popNext = Double.parseDouble(line[0]);
-                double meanNext = Double.parseDouble(line[1]);
-                double s2Next = Double.parseDouble(line[2]);
-                
-                if (first) {
-                    pop = popNext;
-                    mean = meanNext;
-                    s2 = s2Next;
-
-                    first = false;
-                } else {
-                    double meanDiff = meanNext - mean;
-                    mean = (pop * mean + popNext * meanNext) / (pop + popNext);
-                    s2 = s2 + s2Next + meanDiff * meanDiff * pop * popNext / (pop + popNext);
-                    pop = pop + popNext;
-                }
+            for (DoubleWritable v : values) {
+                double value = v.get();
+                n ++;
+                sum += value;
+                sumSquared += value * value;
             }
-            s2 = s2 / pop;
-            
-            String lineOut = String.format("%f,%f,%f", pop, mean, s2);
-            context.write(key, new Text(lineOut));
+
+            double variance = (sumSquared - sum * sum / n) / (n - 1);
+            context.write(key, new DoubleWritable(variance));
         }
     }
 
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "vind variance");
+
         job.setJarByClass(StockVariance.class);
+
         job.setMapperClass(StockMapper.class);
-        job.setCombinerClass(StockReducer.class);
-        job.setReducerClass(StockReducer.class);
+	// do not set the combiner as variance is not commutative
+        job.setReducerClass(VarianceReducer.class);
+
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
+        job.setOutputValueClass(DoubleWritable.class);
+
         FileInputFormat.addInputPath(job, new Path(args[0]));
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
