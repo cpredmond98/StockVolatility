@@ -66,6 +66,8 @@ public class StockVariance {
                     pop = pop + popNext;
                 }
             }
+            s2 / pop;
+            
             String lineOut = String.format("%f,%f,%f", pop, mean, s2);
             context.write(key, new Text(lineOut));
         }
