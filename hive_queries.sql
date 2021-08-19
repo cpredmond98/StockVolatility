@@ -1,7 +1,7 @@
 create database if not exists stocks;
 use stocks;
 
-drop table if exists stockinfo;
+drop table if exists rawInput;
 create table rawInput(
     id int,
     day string,
@@ -16,12 +16,12 @@ ROW format delimited
 fields terminated by ','
 lines terminated by '\n';
 
-load data local inpath 'path to data' OVERWRITE INTO TABLE stockinfo;
+load data local inpath 'path to data' OVERWRITE INTO TABLE rawInput;
 
 drop table if exists maxmin;
 create table maxmin as 
     select stockName, MAX(high) as FY_Max , MIN(low) as FY_Min
-    from stockinfo
+    from rawInput
     group by stockName;
 
 drop table if exists processed
