@@ -16,7 +16,7 @@ ROW format delimited
 fields terminated by ','
 lines terminated by '\n';
 
-load data local inpath '~/stock/data/sap.csv' OVERWRITE INTO TABLE rawInput;
+load data local inpath 'stock/data/sap.csv' OVERWRITE INTO TABLE rawInput;
 
 drop table if exists maxmin;
 create table maxmin as 
