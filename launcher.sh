@@ -16,3 +16,7 @@ hdfs dfs -copyToLocal stock/pig_output pig_output
 echo "displaying first 5 rows of the table generated in Hive/Pig"
 head pig_output/*
 
+echo ""
+echo "Calculating anualized volatility"
+chmod 777 launch_mr_job.sh
+./launch_mr_job.sh
