@@ -39,5 +39,5 @@ create table tradesByDay as
     from rawInput
     group by day;
     
-select * from tradesByDay order by num_trades desc limit 10;
+
 
