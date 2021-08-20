@@ -5,6 +5,9 @@ echo "Running Hive queries, will print the 10 days with the highest volume of tr
 
 hive -f hive_queries.sql
 
+echo "Running Hive query to print days with ten most trades into a text file named 'topvolume.txt'"
+hive -e 'select * from tradesByDay order by num_trades desc limit 10' > topvolume.txt
+
 echo "Running Hive query to print the 5 year max and 5 year min into a text file named '5_yearminmax.txt'"
 hive -e 'select stockName, FY_Max, FY_Min from stock.processed' > 5_yearminmix.txt
 
