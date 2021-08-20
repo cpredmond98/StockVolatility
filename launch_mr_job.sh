@@ -16,5 +16,5 @@ echo "retrieving map reduce results"
 rm -r ~/stock/output
 hdfs dfs -get stock/mr_output ~/stock/output
 hdfs dfs -rm -r stock/output
-cat ~/stock/output/* > ~/stock/output/volatilities.txt
-cat ~/stock/output/volatilities.txt
+cat ~/stock/output/* > ~/stock/volatilities.txt
+cat ~/stock/volatilities.txt
