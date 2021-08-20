@@ -6,7 +6,7 @@ echo "Running Hive queries, will print the 10 days with the highest volume of tr
 hive -f hive_queries.sql
 
 echo "Preparing to run pig"
-hdfs dfs -rm -r stock/output
+hdfs dfs -rm -r stock/pig_output
 echo "Running pig"
 pig -x -useHCatalog mapreduce pig_queries.pig
 
