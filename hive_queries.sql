@@ -26,7 +26,10 @@ create table maxmin as
 
 drop table if exists processed
 create table processed as  
-    select r.*, m.FY_Max, m.FY_Min
+    select r.*, m.FY_Max, m.FY_Min, avg((high + low) / 2)
+	    over(partition by r.stockName 
+		  order by day desc
+		  rows between current row and 1 following) as earnings_ratio
     from rawInput r 
     left outer join maxmin m
     on(r.stockName = m.stockName);
