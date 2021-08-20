@@ -24,7 +24,7 @@ create table maxmin as
     from rawInput
     group by stockName;
 
-drop table if exists processed
+drop table if exists processed;
 create table processed as  
     select r.*, m.FY_Max, m.FY_Min, avg((high + low) / 2)
 	    over(partition by r.stockName 
