@@ -26,9 +26,9 @@ create table maxmin as
 
 drop table if exists processed;
 create table processed as  
-    select r.*, m.FY_Max, m.FY_Min, ((high + low) / 2) / LAG( ((high + low) / 2), 1)
-	OVER(PARTITION BY label 
-		ORDER BY today DESC ) as earnings_ratio
+    select r.*, m.FY_Max, m.FY_Min, ((r.high + r.low) / 2) / LAG( ((r.high + r.low) / 2), 1)
+	OVER(PARTITION BY r.stockName 
+		ORDER BY r.day DESC ) as price_ratio
     from rawInput r 
     left outer join maxmin m
     on(r.stockName = m.stockName);
