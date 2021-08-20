@@ -28,8 +28,7 @@ public class StockVolatility {
                 String[] lineIn = itr.nextToken().split(",");
                 // average all given price values to get one stock price
                 String name = lineIn[7];
-                //double ratio = (Double.parseDouble(lineIn[9]));
-                double ratio = (Double.parseDouble(lineIn[4]));
+                double ratio = (Double.parseDouble(lineIn[9]));
                 double dailyLogReturn = Math.log(ratio);
                 double dailyVariance = dailyLogReturn * dailyLogReturn;
 
