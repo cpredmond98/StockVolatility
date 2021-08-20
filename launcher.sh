@@ -1,9 +1,12 @@
 
 echo "Starting script."
 
-echo "Running Hive queries, will print the 10 days with the highest volume of trades and the 5 year min and max for each stock."
+echo "Running Hive queries, will print the 10 days with the highest volume of trades."
 
 hive -f hive_queries.sql
+
+echo "Running Hive query to print the 5 year max and 5 year min into a text file named '5_yearminmax.txt'"
+hive -e 'select stockName, FY_Max, FY_Min from processed' > 5_yearminmix.txt
 
 echo "Preparing to run pig"
 hdfs dfs -rm -r stock/pig_output
