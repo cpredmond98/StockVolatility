@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.StringTokenizer;
-import java.io.DataInput
-import java.io.DataOutput
+import java.io.DataInput;
+import java.io.DataOutput;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -28,9 +28,10 @@ public class StockVariance {
                 String[] lineIn = itr.nextToken().split(",");
                 // average all given price values to get one stock price
                 String name = lineIn[7];
-                double ratio = (Double.parseDouble(lineIn[9]));
+                //double ratio = (Double.parseDouble(lineIn[9]));
+                double ratio = (Double.parseDouble(lineIn[4]));
                 double dailyLogReturn = Math.log(ratio);
-                double dailyVariance = dailyLogReturn ** dailyLogReturn;
+                double dailyVariance = dailyLogReturn * dailyLogReturn;
 
                 context.write(new Text(name), new DoubleWritable(dialyVariance));
             }

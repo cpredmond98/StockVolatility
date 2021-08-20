@@ -7,3 +7,5 @@ mkdir stock
 mkdir stock/data
 hdfs dfs -mkdir stock
 hdfs dfs -mkdir stock/data
+
+chmod 777 launch_mr_job.sh
