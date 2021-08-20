@@ -31,5 +31,11 @@ create table processed as
     left outer join maxmin m
     on(r.stockName = m.stockName);
 
-select * from processed limit 10;
+drop table if exists tradesByDay;
+create table tradesByDay as
+    select day, SUM(volume) as num_trades
+    from rawInput
+    group by day;
+    
+select * from tradesByDay limit 10;
 
