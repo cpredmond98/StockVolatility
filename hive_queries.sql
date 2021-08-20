@@ -39,5 +39,5 @@ create table tradesByDay as
     from rawInput
     group by day;
     
-select * from tradesByDay order by SUM(volume) desc limit 10;
+select * from tradesByDay order by SUM(num_trades) desc limit 10;
 
