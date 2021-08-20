@@ -62,7 +62,7 @@ public class StockVolatility {
     public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "vind variance");
-        job.setJarByClass(StockVariance.class);
+        job.setJarByClass(StockVolatility.class);
         job.setMapperClass(StockMapper.class);
         job.setCombinerClass(StockReducer.class);
         job.setReducerClass(StockReducer.class);
