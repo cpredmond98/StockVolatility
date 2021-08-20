@@ -11,7 +11,7 @@ echo "Running pig"
 pig -x -useHCatalog mapreduce pig_queries.pig
 
 rm -r pig_output
-hdfs dfs -copyToLocal stock/output pig_output
+hdfs dfs -copyToLocal stock/pig_output pig_output
 
 echo "displaying first 5 rows of the table generated in Hive/Pig"
 head pig_output/*
