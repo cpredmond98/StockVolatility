@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-public class StockVariance {
+public class StockVolatility {
 
     public static class StockMapper
             extends Mapper<Object, Text, Text, DoubleWritable>{
@@ -33,13 +33,13 @@ public class StockVariance {
                 double dailyLogReturn = Math.log(ratio);
                 double dailyVariance = dailyLogReturn * dailyLogReturn;
 
-                context.write(new Text(name), new DoubleWritable(dialyVariance));
+                context.write(new Text(name), new DoubleWritable(dailyVariance));
             }
         }
     }
 
     public static class StockReducer
-            extends Reducer<Text,DoubleWritable,Text,Text> {
+            extends Reducer<Text,DoubleWritable,Text,DoubleWritable> {
 
 
         public void reduce(Text key, Iterable<DoubleWritable> values, Context context
