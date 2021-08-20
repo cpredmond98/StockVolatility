@@ -1,13 +1,11 @@
 #!/bin/bash
 
-hdfs dfs -put ~/stock/data/sap.csv stock/data
-
 echo "compiling program"
 hadoop com.sun.tools.javac.Main StockVolatility.java
 jar cf sv.jar StockVolatility*.class
 
 echo "running"
-hadoop jar sv.jar StockVolatility stock/data/ stock/output
+hadoop jar sv.jar StockVolatility stock/pig_output stock/mr_output
 
 echo "retrieving results"
 rm -r ~/stock/output
