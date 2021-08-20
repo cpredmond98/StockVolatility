@@ -1,7 +1,7 @@
 
 echo "Starting script."
 
-echo "Running Hive queries, will print the 10 days with the highest volume of trades."
+echo "Running Hive queries, will print the 10 days with the highest volume of trades and the 5 year min and max for each stock."
 
 hive -f hive_queries.sql
 
